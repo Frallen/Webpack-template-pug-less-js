@@ -11,14 +11,21 @@
   "author": "Vladislav Popov",
   "license": "ISC",
   "dependencies": {
+    "autoprefixer": "^10.4.0",
+    "copy-webpack-plugin": "^10.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.5.1",
     "file-loader": "^6.2.0",
     "html-loader": "^3.0.1",
     "html-webpack-plugin": "^5.5.0",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
     "mini-css-extract-plugin": "^2.4.5",
-    "node-sass": "^6.0.1",
-    "sass-loader": "^12.3.0",
+    "postcss-loader": "^6.2.1",
+    "prettier": "^2.5.1",
+    "pug": "^2.0.4",
+    "pug-loader": "^2.4.0",
+    "resolve-url-loader": "^4.0.0",
     "style-loader": "^3.3.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.6.0"
@@ -27,6 +34,20 @@
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "babel-loader": "^8.2.3",
+    "raw-loader": "^4.0.2",
+    "url-loader": "^4.1.1",
     "webpack": "^5.64.4"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "develoment": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

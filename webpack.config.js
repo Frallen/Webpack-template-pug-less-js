@@ -1,11 +1,10 @@
 const path = require("path");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const isDev = process.env.NODE_ENV === "development";
 const isProd = !isDev;
-const filename = (ext) =>
-  isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`;
 
 module.exports = {
   //указываю абсолюный путь
@@ -15,7 +14,7 @@ module.exports = {
   entry: "./js/index.js",
   //точка выхода
   output: {
-    filename: `./js/${filename(`js`)}`,
+    filename: `./js/[name].[hash].js`,
     //папка для выгрузки
     path: path.resolve(__dirname, "dist"),
     //чистака при каждой компиляции (для замены на новые файлы)
@@ -24,20 +23,33 @@ module.exports = {
   },
 
   plugins: [
+    require("autoprefixer"),
     new HtmlWebPackPlugin({
-      template: path.resolve(__dirname, "src/index.html"),
-      filename: "index.html",
+      template: path.resolve(__dirname, "src/index.pug"),
+
       minify: {
         //удаляю коменты
         removeComments: true,
         //убираю пробелы
         collapseWhitespace: isProd,
+        inject: true,
       },
     }),
     new MiniCssExtractPlugin({
-      filename: `./css/${filename(`css`)}`,
+      filename: `./css/[name].[hash].css`,
     }),
-   
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "src/img"),
+          to: path.resolve(__dirname, `dist/img`),
+        },
+        {
+          from: path.resolve(__dirname, "src/fonts"),
+          to: path.resolve(__dirname, "dist/fonts"),
+        },
+      ],
+    }),
   ],
   //для определения файла и строк в chromedev
   devtool: isProd ? false : "source-map",
@@ -53,8 +65,8 @@ module.exports = {
       //для обновления html при изменениях
       { test: /\.html$/, loader: "html-loader" },
       {
-        //ищу scss
-        test: /\.s[ac]ss$/,
+        //ищу less
+        test: /\.less$/i,
         //извелчение css
         use: [
           {
@@ -67,8 +79,21 @@ module.exports = {
             },
           },
           "css-loader",
-          "sass-loader",
+          "less-loader",
+          "postcss-loader",
         ],
+      },
+      {
+        test: /\.pug$/,
+        loader: "pug-loader",
+        exclude: /(node_modules|bower_components)/,
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot)$/,
+        type: "asset/resource",
+        generator: {
+          filename: "./fonts/[name][ext]",
+        },
       },
     ],
   },
