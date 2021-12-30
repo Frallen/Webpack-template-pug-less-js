@@ -26,13 +26,25 @@ module.exports = {
     require("autoprefixer"),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, "src/index.pug"),
-
+      inject: true,
+      filename: "index.html",
       minify: {
         //удаляю коменты
         removeComments: true,
         //убираю пробелы
         collapseWhitespace: isProd,
-        inject: true,
+      },
+    }),
+    new HtmlWebPackPlugin({
+      template: path.resolve(__dirname, "src/step1.pug"),
+      inject: true,
+      chunks: ["step1"],
+      filename: "step1.html",
+      minify: {
+        //удаляю коменты
+        removeComments: true,
+        //убираю пробелы
+        collapseWhitespace: isProd,
       },
     }),
     new MiniCssExtractPlugin({
